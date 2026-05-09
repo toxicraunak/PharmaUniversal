@@ -2,6 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import Config from './models/Config.js';
 import Category from './models/Category.js';
 import Product from './models/Product.js';
@@ -12,19 +15,25 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors());
 app.use(express.json());
 
+
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/pharmauniversal';
+
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB Connected');
-    seedData(); // Run seeding after connection
+    seedData();
   })
   .catch(err => console.log('MongoDB Connection Error:', err));
 
-// Routes
+
+// API Routes
 app.get('/api/config', async (req, res) => {
   try {
     const config = await Config.findOne();
@@ -55,18 +64,35 @@ app.get('/api/products', async (req, res) => {
 app.post('/api/config', async (req, res) => {
   try {
     let config = await Config.findOne();
+
     if (!config) {
       config = new Config(req.body);
     } else {
       Object.assign(config, req.body);
     }
+
     await config.save();
+
     res.json(config);
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
+
+// ===== SERVE VITE FRONTEND =====
+
+const distPath = path.join(__dirname, '../dist');
+
+app.use(express.static(distPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
+
+// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
