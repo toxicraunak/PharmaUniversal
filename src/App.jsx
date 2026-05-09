@@ -16,7 +16,7 @@ import SecurePayment from './pages/SecurePayment';
 
 import FloatingActions from './components/FloatingActions';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api';
+const API_URL = 'https://pharmauniversal.onrender.com/api';
 
 function App() {
   const [config, setConfig] = useState(null);
