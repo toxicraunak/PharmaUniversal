@@ -41,3 +41,20 @@ h1, h2, h3, h4, h5, h6 {
 .transition-smooth {
   @apply transition-all duration-300 ease-in-out;
 }
+
+.span-link {
+  cursor: pointer;
+  color: var(--color-primary);
+  transition: all 0.3s ease-in-out;
+}
+
+.span-link.thick{
+  font-weight: 600;
+}
+
+.span-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary);
+  text-decoration-thickness: 1px;
+  transition: all 0.3s ease-in-out;
+}
