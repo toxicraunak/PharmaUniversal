@@ -4,7 +4,7 @@ import { MessageSquare } from 'lucide-react';
 
 const WelcomeSection = ({ config }) => {
   return (
-    <section className="pb-16 pt-4 bg-white">
+    <section className="pb-4 pt-4 bg-white">
       <div className="container mx-auto px-4 text-center max-w-8xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

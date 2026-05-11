@@ -63,7 +63,7 @@ function App() {
           
           <main className="grow">
             <Routes>
-              <Route path="/" element={<Home config={config} />} />
+              <Route path="/" element={<Home config={config} products={products} categories={categories} />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/contact" element={<Contact config={config} />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
