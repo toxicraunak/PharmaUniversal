@@ -74,8 +74,8 @@ function App() {
             </Routes>
           </main>
 
-          <Footer config={config} />
-          <FloatingActions />
+          <Footer config={config} products={products} />
+          <FloatingActions config={config} />
         </div>
       </Router>
     </HelmetProvider>

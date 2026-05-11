@@ -161,9 +161,9 @@ const Header = ({ config, categories, products }) => {
             <button className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer">
               <Search size={18} strokeWidth={2.5} />
             </button>
-            <button className="relative p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer">
-              <ShoppingCart size={18} strokeWidth={2.5} />
-              <span className="absolute top-0 right-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+            <button className="relative p-3 text-gray-600 hover:text-primary transition-colors cursor-pointer border border-primary rounded-full">
+              <ShoppingCart fill="currentColor" size={18} strokeWidth={2.5} />
+              <span className="absolute top-0 -right-1.5 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                 0
               </span>
             </button>

@@ -6,7 +6,7 @@ import googleReviewBadge from "../assets/media/google-review-badge.webp";
 import trustpilotReview from "../assets/media/trustpilot-review.webp";
 import facebookReview from "../assets/media/facebook-review.webp";
 
-const Footer = ({ config }) => {
+const Footer = ({ config, products }) => {
   const usefulPages = [
     { name: 'FAQ', href: '/faq' },
     { name: 'PRIVACY POLICY', href: '/privacy-policy' },
@@ -27,14 +27,7 @@ const Footer = ({ config }) => {
     { url: facebookReview, alt: "Facebook Review" },
   ];
 
-  const topSellers = [
-    'Buy Belbien 10mg', 'Buy Alprahblue', 'Buy Ksalol 1mg', 'Buy Rlam 1mg',
-    'Buy Belladol 100mg', 'Buy Jpdol 100mg', 'Buy Hydrocodone 10mg', 'Buy Tapentadol 100mg',
-    'Buy Lypin 10mg', 'Buy Bensedin', 'Buy Lorazepam 2mg', 'Buy Valium 10mg',
-    'Buy Citra 100mg', 'Buy Oltram 100mg', 'Buy Oxycodone 30mg', 'Buy Trakem 100mg',
-    'Buy Alpz 1mg', 'Buy Clonazepam 2mg', 'Buy Rivotril 2mg', 'Buy Xanax Alko 1mg',
-    'Buy Clovidol 100mg', 'Buy Oltram Loose Pills', 'Buy Soma 350mg'
-  ];
+  const footerProducts = (products || []).filter(p => p.onFooter === 1 || p.onFooter === true);
 
   return (
     <footer className="bg-[#121212] text-white pt-20 pb-10 border-t border-gray-800">
@@ -57,18 +50,59 @@ const Footer = ({ config }) => {
             </div>
             <div className="flex gap-3 mt-8">
               {[
-                "fab fa-facebook-f",
-                "fab fa-x-twitter",
-                "fab fa-instagram",
-                "fab fa-vimeo-v",
-              ].map((icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-8 h-8 border border-gray-700 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300"
-                >
-                  <i className={`${icon} text-[14px]`}></i>
-                </a>
+                {
+                  icon: "fab fa-facebook-f",
+                  label: "Facebook",
+                  buttonColor: "hover:bg-[#1877F2] hover:border-[#1877F2]",
+                  tooltipColor: "bg-[#1877F2]",
+                  pointerColor: "border-t-[#1877F2]",
+                },
+                {
+                  icon: "fab fa-x-twitter",
+                  label: "Twitter",
+                  buttonColor: "hover:bg-sky-500 hover:border-sky-500",
+                  tooltipColor: "bg-sky-500",
+                  pointerColor: "border-t-sky-500",
+                },
+                {
+                  icon: "fab fa-instagram",
+                  label: "Instagram",
+                  buttonColor:
+                    "hover:bg-gradient-to-br hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:border-[#ee2a7b]",
+                  tooltipColor:
+                    "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]",
+                  pointerColor: "border-t-[#ee2a7b]",
+                },
+                {
+                  icon: "fab fa-vimeo-v",
+                  label: "Vimeo",
+                  buttonColor: "hover:bg-[#1AB7EA] hover:border-[#1AB7EA]",
+                  tooltipColor: "bg-[#1AB7EA]",
+                  pointerColor: "border-t-[#1AB7EA]",
+                },
+              ].map((item, i) => (
+                <div key={i} className="relative group/social">
+                  <a
+                    href="#"
+                    className={`w-8 h-8 border border-gray-700 flex items-center justify-center transition-all duration-300 text-white ${item.buttonColor}`}
+                  >
+                    <i className={`${item.icon} text-[14px]`}></i>
+                  </a>
+
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/social:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover/social:translate-y-0 z-60">
+                    <div
+                      className={`text-white text-[10px] px-2 py-1 rounded-sm whitespace-nowrap font-display font-bold relative ${item.tooltipColor}`}
+                    >
+                      {item.label}
+
+                      {/* Pointer */}
+                      <div
+                        className={`absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 ${item.pointerColor}`}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -89,8 +123,14 @@ const Footer = ({ config }) => {
           <div className="lg:col-span-7">
             <h4 className="text-[20px] font-heading! font-bold mb-6 uppercase tracking-tight">Top Sellers</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2">
-              {topSellers.map((item) => (
-                <a key={item} href="#" className="text-gray-400 hover:text-primary text-[12px] font-display transition-colors">{item}</a>
+              {footerProducts.map((product) => (
+                <Link 
+                  key={product._id} 
+                  to={`/shop/${product.slug}`} 
+                  className="text-gray-400 hover:text-primary text-[12px] font-display transition-colors"
+                >
+                  Buy {product.fullName.replace('Tablets', '').replace('Capsules', '').trim()}
+                </Link>
               ))}
             </div>
           </div>

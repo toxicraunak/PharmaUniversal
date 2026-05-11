@@ -28,11 +28,14 @@ const ProductCard = ({ product }) => {
       <div className="relative aspect-16/11 overflow-hidden bg-white hover:bg-gray-200 cursor-pointer transition-all duration-300">
         {/* Sale Badge */}
         {product.onSale && (
-          <div className="absolute top-4 left-4 z-40">
-            <div className="relative bg-[#2EB886] text-white text-[12px] font-black px-4 py-5 rounded-full flex items-center justify-center shadow-lg leading-none">
+          <div className="absolute top-2 left-2 z-40">
+            <div className="relative w-11 h-11 bg-[#2EB886] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-lg leading-none">
               SALE
-              {/* Tail of the bubble */}
-              <div className="absolute -bottom-1 right-2 w-3 h-3 bg-[#2EB886] transform rotate-45 -z-10"></div>
+              {/* Pointed Tail */}
+              <div 
+                className="absolute bottom-0 right-1 w-4 h-4 bg-[#2EB886] -z-10"
+                style={{ clipPath: 'polygon(100% 10%, 100% 100%, 0 90%)' }}
+              ></div>
             </div>
           </div>
         )}
@@ -62,7 +65,7 @@ const ProductCard = ({ product }) => {
                   </button>
                 </Link>
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 translate-x-[-32%] mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform translate-y-2 group-hover/btn:translate-y-0 z-60">
+                <div className="absolute bottom-full left-1/2 translate-x-[-32%] mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover/btn:translate-y-0 z-60">
                   <div className="bg-black text-white text-[10px] px-2 py-1 rounded-sm whitespace-nowrap font-display font-bold relative">
                     Compare
 
@@ -80,7 +83,7 @@ const ProductCard = ({ product }) => {
                   </button>
                 </Link>
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform translate-y-2 group-hover/btn:translate-y-0 z-60">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover/btn:translate-y-0 z-60">
                   <div className="bg-black text-white text-[10px] px-2 py-1 rounded-sm whitespace-nowrap font-display font-bold relative">
                     Wishlist
                     <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-black"></div>

@@ -62,7 +62,7 @@ const Contact = ({ config }) => {
             <div>
               <h3 className="text-[14px] font-heading font-black text-gray-900 uppercase tracking-wide mb-2">Whatsapp number</h3>
               <p className="text-gray-500 font-display text-[14px]">
-                +{config?.contact?.whatsapp || '1 909 366 3104'}
+                {config?.contact?.whatsapp || '1 909 366 3104'}
               </p>
             </div>
 
