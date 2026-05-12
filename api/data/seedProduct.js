@@ -35,7 +35,7 @@ async function seedProduct() {
     // =========================
 
     {
-      name: "Sertraline",
+      name: "Sertraline 50mg",
       fullName: "Sertraline 50mg Tablets",
       slug: "sertraline-50mg",
       image: "https://pharmauniversal.com/wp-content/uploads/2023/04/clovidol_100.png.webp",

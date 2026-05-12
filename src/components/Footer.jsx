@@ -56,6 +56,7 @@ const Footer = ({ config, products }) => {
                   buttonColor: "hover:bg-[#1877F2] hover:border-[#1877F2]",
                   tooltipColor: "bg-[#1877F2]",
                   pointerColor: "border-t-[#1877F2]",
+                  href: config?.socialLinks?.facebook,
                 },
                 {
                   icon: "fab fa-x-twitter",
@@ -63,6 +64,7 @@ const Footer = ({ config, products }) => {
                   buttonColor: "hover:bg-sky-500 hover:border-sky-500",
                   tooltipColor: "bg-sky-500",
                   pointerColor: "border-t-sky-500",
+                  href: config?.socialLinks?.twitter,
                 },
                 {
                   icon: "fab fa-instagram",
@@ -72,6 +74,7 @@ const Footer = ({ config, products }) => {
                   tooltipColor:
                     "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]",
                   pointerColor: "border-t-[#ee2a7b]",
+                  href: config?.socialLinks?.instagram,
                 },
                 {
                   icon: "fab fa-vimeo-v",
@@ -79,12 +82,15 @@ const Footer = ({ config, products }) => {
                   buttonColor: "hover:bg-[#1AB7EA] hover:border-[#1AB7EA]",
                   tooltipColor: "bg-[#1AB7EA]",
                   pointerColor: "border-t-[#1AB7EA]",
+                  href: config?.socialLinks?.vimeo,
                 },
               ].map((item, i) => (
                 <div key={i} className="relative group/social">
                   <a
-                    href="#"
-                    className={`w-8 h-8 border border-gray-700 flex items-center justify-center transition-all duration-300 text-white ${item.buttonColor}`}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-8 h-8 border border-gray-700 flex items-center justify-center transition-all duration-300 text-white cursor-pointer ${item.buttonColor}`}
                   >
                     <i className={`${item.icon} text-[14px]`}></i>
                   </a>
@@ -129,7 +135,7 @@ const Footer = ({ config, products }) => {
                   to={`/shop/${product.slug}`} 
                   className="text-gray-400 hover:text-primary text-[12px] font-display transition-colors"
                 >
-                  Buy {product.fullName.replace('Tablets', '').replace('Capsules', '').trim()}
+                  Buy {product.name}
                 </Link>
               ))}
             </div>

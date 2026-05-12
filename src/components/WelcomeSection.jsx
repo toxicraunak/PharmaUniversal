@@ -19,7 +19,7 @@ const WelcomeSection = ({ config }) => {
             Highly Rated Pharmacy for Pain, Anxiety and Insomnia Treatment
           </h3>
           <p className="text-gray-500 font-display leading-[1.8] text-[15px] max-w-6xl mx-auto">
-            Pharma universal embarked on this journey with an aim to provide people with effective, safe, and easy to use medications to help eliminate & treat ailments and physical problems. We have left no stone unturned in reaching the pinnacle of perfection with our wide range of high-quality medicine. We are one of the most trusted and <span className="text-primary hover:underline cursor-pointer">reputed online pharmacies</span> whose objective is to bring improvement into the lives of countless individuals who are tired of trying different medicines.
+            {config?.siteName} embarked on this journey with an aim to provide people with effective, safe, and easy to use medications to help eliminate & treat ailments and physical problems. We have left no stone unturned in reaching the pinnacle of perfection with our wide range of high-quality medicine. We are one of the most trusted and <span className="text-primary hover:underline cursor-pointer">reputed online pharmacies</span> whose objective is to bring improvement into the lives of countless individuals who are tired of trying different medicines.
           </p>
         </motion.div>
       </div>

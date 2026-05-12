@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useSearchParams } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DynamicSEO from './components/DynamicSEO';
 import Home from './pages/Home';
+import Search from './pages/Search';
 import NotFound from './pages/NotFound';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
@@ -13,10 +14,22 @@ import HowItWorks from './pages/HowItWorks';
 import About from './pages/About';
 import WhyShop from './pages/WhyShop';
 import SecurePayment from './pages/SecurePayment';
+import Shop from './home/Shop';
 
 import FloatingActions from './components/FloatingActions';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+// Component to decide whether to show Home or Search results on the root path
+const RootRoute = ({ config, products, categories }) => {
+  const [searchParams] = useSearchParams();
+  const isSearch = searchParams.get('s');
+
+  if (isSearch) {
+    return <Search products={products} />;
+  }
+  return <Home config={config} products={products} categories={categories} />;
+};
 
 function App() {
   const [config, setConfig] = useState(null);
@@ -63,7 +76,8 @@ function App() {
           
           <main className="grow">
             <Routes>
-              <Route path="/" element={<Home config={config} products={products} categories={categories} />} />
+              <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
+              <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/contact" element={<Contact config={config} />} />
               <Route path="/how-it-works" element={<HowItWorks />} />

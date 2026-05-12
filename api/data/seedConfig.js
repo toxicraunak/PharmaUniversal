@@ -19,10 +19,10 @@ async function seedConfig() {
                 ogImage: "/og-image.jpg"
             },
             socialLinks: {
-                facebook: "#",
-                twitter: "#",
-                instagram: "#",
-                linkedin: "#"
+                facebook: "https://facebook.com",
+                twitter: "https://twitter.com",
+                instagram: "https://instagram.com",
+                vimeo: "https://vimeo.com"
             }
         });
         console.log('Default config seeded');

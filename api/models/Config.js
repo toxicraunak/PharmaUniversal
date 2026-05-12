@@ -19,7 +19,7 @@ const configSchema = new mongoose.Schema({
     facebook: { type: String, default: '#' },
     twitter: { type: String, default: '#' },
     instagram: { type: String, default: '#' },
-    linkedin: { type: String, default: '#' }
+    vimeo: { type: String, default: '#' }
   }
 });
 
