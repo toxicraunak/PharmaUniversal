@@ -137,7 +137,7 @@ const Header = ({ config, categories, products }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-[100] w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <header className="sticky top-0 z-100 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex h-20 items-center justify-between gap-4">
             
@@ -260,7 +260,7 @@ const Header = ({ config, categories, products }) => {
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                <h3 className="text-lg font-black uppercase tracking-wider text-gray-900">
+                <h3 className="text-lg font-black font-heading! uppercase tracking-wider text-gray-900">
                   Search
                 </h3>
                 <button

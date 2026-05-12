@@ -8,7 +8,7 @@ const HowItWorks = () => {
       {/* Header Section */}
       <div className="border-b border-gray-100 py-8 mb-12 bg-gray-50">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl font-heading font-black text-primary tracking-tight uppercase">How It Works</h1>
+          <h1 className="text-3xl font-heading! font-black text-primary tracking-tight uppercase">How It Works</h1>
           <nav className="flex items-center gap-2 text-sm font-medium text-gray-400">
             <Link to="/" className="hover:text-primary transition-colors">Home</Link>
             <span>/</span>

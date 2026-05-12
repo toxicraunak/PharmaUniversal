@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import DynamicSEO from './components/DynamicSEO';
 import Home from './pages/Home';
 import Search from './pages/Search';
+import ProductDetails from './pages/ProductDetails';
 import NotFound from './pages/NotFound';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
@@ -78,6 +79,7 @@ function App() {
             <Routes>
               <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
               <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
+              <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/contact" element={<Contact config={config} />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
