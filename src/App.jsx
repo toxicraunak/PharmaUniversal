@@ -81,7 +81,7 @@ function App() {
               <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
               <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
               <Route path="/faq" element={<FAQ />} />
-              <Route path="/contact" element={<Contact config={config} />} />
+              <Route path="/contact-us" element={<Contact config={config} />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/about" element={<About />} />
               <Route path="/why-shop-with-us" element={<WhyShop />} />

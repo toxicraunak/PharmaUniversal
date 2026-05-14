@@ -13,6 +13,7 @@ import {
   Share2,
   X
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { ProductCard } from '../components/ProductSection';
 
 const ProductDetails = ({ products, config }) => {
@@ -21,6 +22,8 @@ const ProductDetails = ({ products, config }) => {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(false);
 
   const product = useMemo(() => {
     return products?.find(p => p.slug === slug);
@@ -37,6 +40,47 @@ const ProductDetails = ({ products, config }) => {
       const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
       setIsWishlisted(wishlist.some(item => item._id === product._id));
     }
+  }, [product]);
+
+  // Fetch Reviews
+  useEffect(() => {
+    if (!product) return;
+
+    const fetchReviews = async () => {
+      setLoadingReviews(true);
+      try {
+        const targetCount = Math.floor(Math.random() * 21) + 10; // 10 to 30
+        const requestsNeeded = Math.ceil(targetCount / 10);
+        
+        // BASE_CF_API_URL from .env might not be prefixed with VITE_, so we check both or use fallback
+        const baseUrl = import.meta.env.VITE_BASE_CF_API_URL || 'https://devil-pharmacy-reviews.sahilraz9265.workers.dev/';
+        const medicineName = product.fullName || product.name;
+        
+        const requests = Array.from({ length: requestsNeeded }).map(() => 
+          fetch(`${baseUrl}?medicine=${encodeURIComponent(medicineName)}`).then(res => res.json())
+        );
+        
+        const results = await Promise.all(requests);
+        let allReviews = results.flatMap(res => res.reviews || []);
+        
+        // Map API response to match UI structure and slice to target count
+        const mappedReviews = allReviews.slice(0, targetCount).map((r, index) => ({
+          id: index,
+          name: r.name,
+          date: r.date,
+          comment: r.review,
+          rating: 5 // Default rating
+        }));
+        
+        setReviews(mappedReviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+
+    fetchReviews();
   }, [product]);
 
   if (!product) {
@@ -59,29 +103,6 @@ const ProductDetails = ({ products, config }) => {
   const totalPrice = (unitPrice * quantity).toFixed(2);
   const totalMrp = (unitMrp * quantity).toFixed(2);
 
-  const reviews = [
-    {
-      name: 'John Doe',
-      rating: 5,
-      comment: 'This product is great!',
-      date: '2022-01-01',
-      
-    },
-    {
-      name: 'John Doe',
-      rating: 5,
-      comment: 'This product is great!',
-      date: '2022-01-01',
-      
-    },
-    {
-      name: 'John Doe',
-      rating: 5,
-      comment: 'This product is great!',
-      date: '2022-01-01',
-      
-    },
-  ]
 
   const handleWhatsApp = () => {
     const phone = config?.contact?.phone || '19208286890';
@@ -105,6 +126,9 @@ const ProductDetails = ({ products, config }) => {
 
   return (
     <div className="min-h-screen bg-white font-display">
+      <Helmet defer={false}>
+        <title>{product.fullName || product.name} - {config?.siteName || 'Pharmacy Universal'}</title>
+      </Helmet>
       {/* Breadcrumbs */}
       <div className="bg-gray-50/30 border-b border-gray-100 py-6 sm:py-4">
         <div className="container mx-auto px-4 py-4 max-w-6xl">
@@ -374,7 +398,12 @@ const ProductDetails = ({ products, config }) => {
           <div className="border border-gray-100 divide-y divide-gray-300"></div>
 
           <div className="border border-primary rounded-md py-2 mt-6">
-            {reviews.length === 0 ? (
+            {loadingReviews ? (
+              <div className="py-10 flex flex-col items-center justify-center gap-3">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">Loading Reviews...</p>
+              </div>
+            ) : reviews.length === 0 ? (
               <p className="text-center text-gray-500">No reviews yet.</p>
             ) : (
               reviews.map((review, idx) => (

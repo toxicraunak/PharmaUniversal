@@ -2,10 +2,14 @@ import React from 'react';
 import { MapPin, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const Contact = ({ config }) => {
   return (
     <div className="bg-white min-h-screen">
+      <Helmet defer={false}>
+        <title>Contact Us - Pharma Universal</title>
+      </Helmet>
       {/* Header Section */}
       <div className="border-b border-gray-100 py-8 mb-12 bg-gray-50">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -13,7 +17,7 @@ const Contact = ({ config }) => {
           <nav className="flex items-center gap-2 text-sm font-medium text-gray-400">
             <Link to="/" className="hover:text-primary transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-gray-900">Contact us</span>
+            <span className="text-primary">Contact us</span>
           </nav>
         </div>
       </div>

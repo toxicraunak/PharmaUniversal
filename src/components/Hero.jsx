@@ -5,7 +5,7 @@ import bannerBg from '../assets/media/pu-bnr-1.webp';
 
 const Hero = ({ config }) => {
   return (
-    <section className="py-8 lg:py-12 bg-white">
+    <section className="py-6 lg:py-12 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="relative overflow-hidden rounded-[30px] aspect-16/6 md:aspect-16/5 lg:aspect-16/6.5 shadow-2xl">
           <a href={"/shop"}>

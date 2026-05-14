@@ -111,7 +111,7 @@ export const ProductCard = ({ product, viewMode = 'grid' }) => {
             <div className="absolute top-2 left-2 z-40">
               <div className="relative w-6 h-6 sm:w-11 sm:h-11 bg-[#2EB886] text-white text-[6px] sm:text-[10px] font-black rounded-full flex items-center justify-center shadow-lg leading-none">
                 SALE
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#2EB886] -z-10" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}></div>
+                <div className="absolute bottom-[-0.5px] right-[0.2px] w-4 h-4 bg-[#2EB886] -z-10" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}></div>
               </div>
             </div>
           )}
@@ -153,7 +153,7 @@ export const ProductCard = ({ product, viewMode = 'grid' }) => {
           <div className="absolute top-1.5 left-1.5 z-10 scale-75 sm:scale-100 origin-top-left">
             <div className="relative w-10 h-10 bg-[#2EB886] text-white text-[9px] font-black rounded-full flex items-center justify-center shadow-lg leading-none">
               SALE
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#2EB886] -z-10" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}></div>
+              <div className="absolute bottom-[-0.5px] right-[0.2px] w-4 h-4 bg-[#2EB886] -z-10" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}></div>
             </div>
           </div>
         )}
@@ -294,7 +294,6 @@ export const ProductToolbar = ({
                 <option value="60">60</option>
                 <option value="90">90</option>
                 <option value="120">120</option>
-                <option value="All">All</option>
               </select>
             </div>
 

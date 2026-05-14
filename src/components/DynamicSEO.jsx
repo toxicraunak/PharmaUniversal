@@ -7,9 +7,9 @@ const DynamicSEO = ({ config }) => {
   const { seo, siteName } = config;
 
   return (
-    <Helmet>
+    <Helmet defer={false}>
       {/* Basic Meta Tags */}
-      <title>{seo?.title || siteName}</title>
+      <title>{seo?.title || siteName || 'Pharma Universal'}</title>
       <meta name="description" content={seo?.description} />
       <meta name="keywords" content={seo?.keywords} />
 

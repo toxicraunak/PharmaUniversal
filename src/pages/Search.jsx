@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ProductCard, ProductToolbar } from '../components/ProductSection';
 
 const Search = ({ products }) => {
@@ -79,9 +80,12 @@ const Search = ({ products }) => {
 
   return (
     <div className="min-h-screen bg-white pb-20 font-display">
+      <Helmet defer={false}>
+        <title>Search Results for "{query}" - Pharmacy Universal</title>
+      </Helmet>
       
       {/* Page Header & Breadcrumbs */}
-      <div className="bg-gray-50/50 py-12 border-b border-gray-100">
+      <div className="bg-gray-50/50 py-6 lg:py-12 border-b border-gray-100">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h1 className="text-[28px] md:text-[40px] font-heading! font-bold text-primary uppercase tracking-tight">
