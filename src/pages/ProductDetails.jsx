@@ -11,8 +11,11 @@ import {
   ChevronLeft,
   MessageCircle,
   Share2,
-  X
+  X,
+  GitCompareArrows
 } from 'lucide-react';
+import { useCompare } from '../context/CompareContext';
+import { useCart } from '../context/CartContext';
 import { Helmet } from 'react-helmet-async';
 import { ProductCard } from '../components/ProductSection';
 
@@ -24,10 +27,16 @@ const ProductDetails = ({ products, config }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
+  const { cartItems, addToCart } = useCart();
+  const { compareList, addToCompare } = useCompare();
 
   const product = useMemo(() => {
     return products?.find(p => p.slug === slug);
   }, [products, slug]);
+
+  const isComparing = useMemo(() => {
+    return compareList.some(p => p._id === product?._id);
+  }, [compareList, product?._id]);
 
   // Sync scroll to top
   useEffect(() => {
@@ -50,18 +59,19 @@ const ProductDetails = ({ products, config }) => {
       setLoadingReviews(true);
       try {
         const targetCount = Math.floor(Math.random() * 21) + 10; // 10 to 30
-        const requestsNeeded = Math.ceil(targetCount / 10);
         
         // BASE_CF_API_URL from .env might not be prefixed with VITE_, so we check both or use fallback
-        const baseUrl = import.meta.env.VITE_BASE_CF_API_URL || 'https://devil-pharmacy-reviews.sahilraz9265.workers.dev/';
+        let baseUrl = import.meta.env.VITE_BASE_CF_API_URL || 'https://devil-pharmacy-reviews.sahilraz9265.workers.dev/';
+        
+        // Ensure baseUrl ends with /
+        if (!baseUrl.endsWith('/')) baseUrl += '/';
+        
         const medicineName = product.fullName || product.name;
         
-        const requests = Array.from({ length: requestsNeeded }).map(() => 
-          fetch(`${baseUrl}?medicine=${encodeURIComponent(medicineName)}`).then(res => res.json())
-        );
+        const response = await fetch(`${baseUrl}reviews?medicine=${encodeURIComponent(medicineName)}&count=${targetCount}`);
+        const result = await response.json();
         
-        const results = await Promise.all(requests);
-        let allReviews = results.flatMap(res => res.reviews || []);
+        let allReviews = result.reviews || [];
         
         // Map API response to match UI structure and slice to target count
         const mappedReviews = allReviews.slice(0, targetCount).map((r, index) => ({
@@ -124,10 +134,12 @@ const ProductDetails = ({ products, config }) => {
     window.dispatchEvent(new Event('wishlistUpdated'));
   };
 
+  const title = `${product.fullName || product.name} - ${config?.siteName || 'Pharmacy Universal'}`;
+
   return (
     <div className="min-h-screen bg-white font-display">
       <Helmet defer={false}>
-        <title>{product.fullName || product.name} - {config?.siteName || 'Pharmacy Universal'}</title>
+        <title>{title}</title>
       </Helmet>
       {/* Breadcrumbs */}
       <div className="bg-gray-50/30 border-b border-gray-100 py-6 sm:py-4">
@@ -294,7 +306,14 @@ const ProductDetails = ({ products, config }) => {
                     </div>
                   </div>
 
-                  <button className="flex-1 h-12 bg-black text-white rounded-lg flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:bg-primary transition-all duration-300 group shadow-lg cursor-pointer py-4">
+                  <button 
+                    onClick={() => {
+                      const pkgObj = product.packages?.find(p => p.label === selectedPackage) || product.packages?.[0];
+                      addToCart(product, pkgObj, quantity);
+                      navigate('/cart');
+                    }}
+                    className="flex-1 h-12 bg-black text-white rounded-lg flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:bg-primary transition-all duration-300 group shadow-lg cursor-pointer py-4"
+                  >
                     <ShoppingCart size={16} fill="currentColor" className="group-hover:scale-110 transition-transform" />
                     Add To Cart
                   </button>
@@ -321,9 +340,16 @@ const ProductDetails = ({ products, config }) => {
                   <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
                   {isWishlisted ? 'Added to Wishlist' : 'Add to Wishlist'}
                 </button>
-                <button className="flex-1 h-11 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center gap-2 text-[9px] font-black uppercase tracking-widest text-gray-400 hover:bg-white hover:border-gray-200 transition-all cursor-pointer">
-                  <RefreshCcw size={14} />
-                  Compare
+                <button 
+                  onClick={() => addToCompare(product)}
+                  className={`flex-1 h-11 border rounded-lg flex items-center justify-center gap-2 text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                    isComparing 
+                    ? 'bg-primary/10 border-primary text-primary' 
+                    : 'bg-gray-50 border-gray-100 text-gray-400 hover:bg-white hover:border-gray-200'
+                  }`}
+                >
+                  {isComparing ? <GitCompareArrows size={14} /> : <RefreshCcw size={14} />}
+                  {isComparing ? 'Comparing' : 'Compare'}
                 </button>
               </div>
             </div>

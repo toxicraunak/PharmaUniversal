@@ -61,10 +61,12 @@ const Shop = ({ config, products, categories }) => {
     return result;
   }, [products, minPrice, maxPrice, sortBy, availability, itemsPerPage]);
 
+  const title = `Shop - ${config?.siteName || 'Pharmacy Universal'}`;
+
   return (
     <div className="min-h-screen bg-white pb-20 font-display">
       <Helmet defer={false}>
-        <title>Shop - {config?.siteName || 'Pharmacy Universal'}</title>
+        <title>{title}</title>
       </Helmet>
       
       {/* Page Header & Breadcrumbs */}

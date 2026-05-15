@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-const About = () => {
+const About = ({ config }) => {
+  const title = `About Us - ${config?.siteName || 'Pharmacy Universal'}`;
+  
   return (
     <div className="bg-white min-h-screen">
       <Helmet defer={false}>
-        <title>About Us - Pharmacy Universal</title>
+        <title>{title}</title>
       </Helmet>
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16 max-w-8xl">

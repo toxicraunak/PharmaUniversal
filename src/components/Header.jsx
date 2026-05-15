@@ -3,11 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingCart, X, ChevronRight } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SearchProductItem } from "./ProductSection";
+import { useCart } from "../context/CartContext";
+import CartDrawer from "./CartDrawer";
 
 const Header = ({ config, categories, products }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { cartCount, setIsCartOpen } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -221,16 +224,21 @@ const Header = ({ config, categories, products }) => {
               >
                 <Search size={20} strokeWidth={2.5} />
               </button>
-              <button className="relative p-2.5 text-gray-600 hover:text-primary transition-colors cursor-pointer border border-primary/40 rounded-full group hover:border-primary">
+              <button 
+                onClick={() => setIsCartOpen(true)}
+                className="relative p-2.5 text-gray-600 hover:text-primary transition-colors cursor-pointer border border-primary/40 rounded-full group hover:border-primary"
+              >
                 <ShoppingCart
                   fill="currentColor"
                   size={18}
                   strokeWidth={2.5}
-                  className="text-gray-400 group-hover:text-primary"
+                  className="text-gray-600 group-hover:text-primary"
                 />
-                <span className="absolute top-0 -right-1.5 bg-primary text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
-                  0
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute top-0 -right-1.5 bg-primary text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
+                    {cartCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -341,6 +349,7 @@ const Header = ({ config, categories, products }) => {
           </>
         )}
       </AnimatePresence>
+      <CartDrawer />
     </>
   );
 };

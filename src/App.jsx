@@ -5,6 +5,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DynamicSEO from './components/DynamicSEO';
+import CartDrawer from './components/CartDrawer';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
@@ -15,9 +17,26 @@ import HowItWorks from './pages/HowItWorks';
 import About from './pages/About';
 import WhyShop from './pages/WhyShop';
 import SecurePayment from './pages/SecurePayment';
+import ProductCategory from './pages/ProductCategory';
+import ComparePage from './pages/Compare';
 import Shop from './home/Shop';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import AntispamPolicy from './pages/AntispamPolicy';
+import DeliveryPolicy from './pages/DeliveryPolicy';
+import TermsConditions from './pages/TermsConditions';
+import ReturnsRefunds from './pages/ReturnsRefunds';
+import OrderProcessing from './pages/OrderProcessing';
+import Blog from './pages/Blog';
+import ReferFriend from './pages/ReferFriend';
+import OrderReceived from './pages/OrderReceived';
 
 import FloatingActions from './components/FloatingActions';
+import ComparePanel from './components/ComparePanel';
+import { CompareProvider } from './context/CompareContext';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -69,31 +88,53 @@ function App() {
 
   return (
     <HelmetProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen">
-          <DynamicSEO config={config} />
-          
-          <Header config={config} categories={categories} products={products} />
-          
-          <main className="grow">
-            <Routes>
-              <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
-              <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
-              <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/contact-us" element={<Contact config={config} />} />
-              <Route path="/how-it-works" element={<HowItWorks />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/why-shop-with-us" element={<WhyShop />} />
-              <Route path="/safe-payment" element={<SecurePayment />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
+      <AuthProvider>
+        <CartProvider>
+          <CompareProvider>
+            <Router>
+              <div className="flex flex-col min-h-screen">
+                <ScrollToTop />
+                <DynamicSEO config={config} />
+                
+                <Header config={config} categories={categories} products={products} />
+                
+                <main className="grow">
+                  <Routes>
+                    <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
+                    <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
+                    <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
+                    <Route path="/product-category/:slug" element={<ProductCategory products={products} categories={categories} config={config} />} />
+                    <Route path="/compare" element={<ComparePage config={config} />} />
+                    <Route path="/cart" element={<Cart config={config} />} />
+                    <Route path="/checkout" element={<Checkout config={config} />} />
+                    <Route path="/faq" element={<FAQ config={config} />} />
+                    <Route path="/contact-us" element={<Contact config={config} />} />
+                    <Route path="/how-it-works" element={<HowItWorks config={config} />} />
+                    <Route path="/about" element={<About config={config} />} />
+                    <Route path="/why-shop-with-us" element={<WhyShop config={config} />} />
+                    <Route path="/safe-payment" element={<SecurePayment config={config} />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy config={config} />} />
+                    <Route path="/antispam-policy" element={<AntispamPolicy config={config} />} />
+                    <Route path="/delivery-policy" element={<DeliveryPolicy config={config} />} />
+                    <Route path="/terms-conditions" element={<TermsConditions config={config} />} />
+                    <Route path="/refund-returns-policy" element={<ReturnsRefunds config={config} />} />
+                    <Route path="/order-processing" element={<OrderProcessing config={config} />} />
+                    <Route path="/blog" element={<Blog config={config} />} />
+                    <Route path="/refer-a-friend" element={<ReferFriend config={config} />} />
+                    <Route path="/order-received" element={<OrderReceived config={config} />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
 
-          <Footer config={config} products={products} />
-          <FloatingActions config={config} />
-        </div>
-      </Router>
+                <CartDrawer />
+                <ComparePanel />
+                <Footer config={config} products={products} />
+                <FloatingActions config={config} />
+              </div>
+            </Router>
+          </CompareProvider>
+        </CartProvider>
+      </AuthProvider>
     </HelmetProvider>
   );
 }

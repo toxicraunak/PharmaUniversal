@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
-const SecurePayment = () => {
+const SecurePayment = ({ config }) => {
+  const title = `Secure Payment - ${config?.siteName || 'Pharmacy Universal'}`;
   const paymentMethods = [
     'PayPal',
     'CashApp',
@@ -16,7 +17,7 @@ const SecurePayment = () => {
   return (
     <div className="bg-white min-h-screen">
       <Helmet defer={false}>
-        <title>Secure Payment - Pharmacy Universal</title>
+        <title>{title}</title>
       </Helmet>
       {/* Header Section */}
       <div className="border-b border-gray-100 py-8 mb-12 bg-gray-50">

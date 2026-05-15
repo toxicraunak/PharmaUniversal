@@ -83,13 +83,14 @@ const AccordionItem = ({ item, isOpen, onClick }) => {
   );
 };
 
-const FAQ = () => {
+const FAQ = ({ config }) => {
   const [openIndex, setOpenIndex] = useState(0);
+  const title = `FAQ - ${config?.siteName || 'Pharmacy Universal'}`;
 
   return (
     <div className="bg-white min-h-screen">
       <Helmet defer={false}>
-        <title>FAQ - Pharmacy Universal</title>
+        <title>{title}</title>
       </Helmet>
       {/* Header Section */}
       <div className="border-b border-gray-100 py-8 mb-12 bg-gray-50">

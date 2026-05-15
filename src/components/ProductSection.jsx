@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Heart, RefreshCcw, Star, LayoutGrid, List, Filter, X } from 'lucide-react';
+import { ShoppingCart, Heart, RefreshCcw, Star, LayoutGrid, List, Filter, X, Check, GitCompareArrows } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCompare } from '../context/CompareContext';
 
 export const ProductCard = ({ product, viewMode = 'grid' }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const { compareList, addToCompare } = useCompare();
+
+  const isComparing = useMemo(() => {
+    return compareList.some(p => p._id === product._id);
+  }, [compareList, product._id]);
 
   // Check wishlist status on mount
   useEffect(() => {
@@ -65,16 +71,22 @@ export const ProductCard = ({ product, viewMode = 'grid' }) => {
                 exit={{ opacity: 0, y: 30 }}
                 className="absolute bottom-0 left-0 right-0 z-50 flex divide-x divide-gray-100 h-10 gap-px"
               >
-                {/* Compare Button */}
                 <div className="flex-1 relative group/btn">
-                  <Link to={'/#'}>
-                    <button className="w-full h-full flex items-center justify-center text-gray-500 hover:text-white cursor-pointer bg-white hover:bg-black duration-300 transition-all">
-                      <RefreshCcw size={18} />
-                    </button>
-                  </Link>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      addToCompare(product);
+                    }}
+                    className={`w-full h-full flex items-center justify-center cursor-pointer duration-300 transition-all ${
+                      isComparing ? 'bg-primary text-white' : 'bg-white text-gray-500 hover:bg-black hover:text-white'
+                    }`}
+                  >
+                    {isComparing ? <GitCompareArrows size={18} /> : <RefreshCcw size={18} />}
+                  </button>
                   <div className="absolute bottom-full left-1/2 translate-x-[-32%] mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover/btn:translate-y-0 z-60">
                     <div className="bg-black text-white text-[10px] px-2 py-1 rounded-sm whitespace-nowrap font-display font-bold relative">
-                      Compare
+                      {isComparing ? 'Comparing' : 'Compare'}
                       <div className="absolute top-full left-[30%] -translate-x-1/2 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-black"></div>
                     </div>
                   </div>
@@ -175,14 +187,21 @@ export const ProductCard = ({ product, viewMode = 'grid' }) => {
               className="absolute bottom-0 left-0 right-0 z-50 flex divide-x divide-gray-100 h-10 gap-px mb-[0.8px]"
             >
               <div className="flex-1 relative group/btn">
-                <Link to={'/#'}>
-                  <button className="w-full h-full flex items-center justify-center text-gray-500 hover:text-white cursor-pointer bg-white hover:bg-black duration-300 transition-all">
-                    <RefreshCcw size={18} />
-                  </button>
-                </Link>
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToCompare(product);
+                  }}
+                  className={`w-full h-full flex items-center justify-center cursor-pointer duration-300 transition-all ${
+                    isComparing ? 'bg-primary text-white' : 'bg-white text-gray-500 hover:bg-black hover:text-white'
+                  }`}
+                >
+                  {isComparing ? <GitCompareArrows size={18} /> : <RefreshCcw size={18} />}
+                </button>
                 <div className="absolute bottom-full left-1/2 translate-x-[-32%] mb-2 opacity-0 group-hover/btn:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover/btn:translate-y-0 z-60">
                   <div className="bg-black text-white text-[10px] px-2 py-1 rounded-sm whitespace-nowrap font-display font-bold relative">
-                    Compare
+                    {isComparing ? 'Comparing' : 'Compare'}
                     <div className="absolute top-full left-[30%] -translate-x-1/2 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-black"></div>
                   </div>
                 </div>

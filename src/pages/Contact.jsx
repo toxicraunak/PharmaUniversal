@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
 const Contact = ({ config }) => {
+  const title = `Contact Us - ${config?.siteName || 'Pharmacy Universal'}`;
+  
   return (
     <div className="bg-white min-h-screen">
       <Helmet defer={false}>
-        <title>Contact Us - Pharma Universal</title>
+        <title>{title}</title>
       </Helmet>
       {/* Header Section */}
       <div className="border-b border-gray-100 py-8 mb-12 bg-gray-50">
