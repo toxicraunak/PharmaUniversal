@@ -2,6 +2,7 @@ import Config from '../models/Config.js';
 import Category from '../models/Category.js';
 import Product from '../models/Product.js';
 import Setting from '../models/Setting.js';
+import User from '../models/User.js';
 import seedConfig from './seedConfig.js';
 import seedCategory from './seedCategory.js';
 import seedProduct from './seedProduct.js';
@@ -51,6 +52,18 @@ const seedData = async () => {
         }
       ]);
       console.log('Settings seeded');
+    }
+    // Seed Admin User
+    const adminUser = await User.findOne({ email: 'admin@pharmauniversal.com' });
+    if (!adminUser) {
+      await User.create({
+        firstName: 'System',
+        lastName: 'Admin',
+        email: 'admin@pharmauniversal.com',
+        password: 'Admin@123', // Will be hashed by pre-save hook
+        isAdmin: true
+      });
+      console.log('Admin user seeded');
     }
     
   } catch (error) {

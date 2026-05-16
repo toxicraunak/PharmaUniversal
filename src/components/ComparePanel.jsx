@@ -104,7 +104,7 @@ const ComparePanel = () => {
                 <div className="w-full md:w-auto flex flex-row md:flex-col items-center gap-3 shrink-0">
                   <Link 
                     to="/compare" 
-                    className={`flex-1 md:w-56 py-3 md:py-4 rounded-xl text-center text-[10px] md:text-xs font-black uppercase tracking-[0.1em] md:tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2 font-display! ${
+                    className={`flex-1 md:w-56 py-3 md:py-4 rounded-xl text-center text-[10px] md:text-xs font-black uppercase tracking-widest md:tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2 font-display! ${
                       compareList.length >= 2 
                       ? 'bg-black text-white hover:bg-primary shadow-xl' 
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'

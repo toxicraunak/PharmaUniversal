@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, useSearchParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useSearchParams, Navigate, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import SEO from './components/SEO';
+
+// Admin Imports
+import AdminLogin from './admin/AdminLogin';
+import AdminLayout from './admin/AdminLayout';
+import Dashboard from './admin/Dashboard';
+import ProductManagement from './admin/ProductManagement';
+import CategoryManagement from './admin/CategoryManagement';
+import OrderManagement from './admin/OrderManagement';
+import UserManagement from './admin/UserManagement';
+import SettingsManagement from './admin/SettingsManagement';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DynamicSEO from './components/DynamicSEO';
@@ -51,6 +62,18 @@ const RootRoute = ({ config, products, categories }) => {
   return <Home config={config} products={products} categories={categories} />;
 };
 
+// Protected Route Component for Admin
+const AdminRoute = ({ children }) => {
+  const token = localStorage.getItem('adminToken');
+  const user = JSON.parse(localStorage.getItem('adminUser') || '{}');
+  
+  if (!token || !user.isAdmin) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  return <AdminLayout>{children}</AdminLayout>;
+};
+
 function App() {
   const [config, setConfig] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -92,50 +115,73 @@ function App() {
         <CartProvider>
           <CompareProvider>
             <Router>
-              <div className="flex flex-col min-h-screen">
-                <ScrollToTop />
-                <DynamicSEO config={config} />
-                
-                <Header config={config} categories={categories} products={products} />
-                
-                <main className="grow">
-                  <Routes>
-                    <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
-                    <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
-                    <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
-                    <Route path="/product-category/:slug" element={<ProductCategory products={products} categories={categories} config={config} />} />
-                    <Route path="/compare" element={<ComparePage config={config} />} />
-                    <Route path="/cart" element={<Cart config={config} />} />
-                    <Route path="/checkout" element={<Checkout config={config} />} />
-                    <Route path="/faq" element={<FAQ config={config} />} />
-                    <Route path="/contact-us" element={<Contact config={config} />} />
-                    <Route path="/how-it-works" element={<HowItWorks config={config} />} />
-                    <Route path="/about" element={<About config={config} />} />
-                    <Route path="/why-shop-with-us" element={<WhyShop config={config} />} />
-                    <Route path="/safe-payment" element={<SecurePayment config={config} />} />
-                    <Route path="/privacy-policy" element={<PrivacyPolicy config={config} />} />
-                    <Route path="/antispam-policy" element={<AntispamPolicy config={config} />} />
-                    <Route path="/delivery-policy" element={<DeliveryPolicy config={config} />} />
-                    <Route path="/terms-conditions" element={<TermsConditions config={config} />} />
-                    <Route path="/refund-returns-policy" element={<ReturnsRefunds config={config} />} />
-                    <Route path="/order-processing" element={<OrderProcessing config={config} />} />
-                    <Route path="/blog" element={<Blog config={config} />} />
-                    <Route path="/refer-a-friend" element={<ReferFriend config={config} />} />
-                    <Route path="/order-received" element={<OrderReceived config={config} />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-
-                <CartDrawer />
-                <ComparePanel />
-                <Footer config={config} products={products} />
-                <FloatingActions config={config} />
-              </div>
+              <AppContent config={config} categories={categories} products={products} />
             </Router>
           </CompareProvider>
         </CartProvider>
       </AuthProvider>
     </HelmetProvider>
+  );
+}
+
+function AppContent({ config, categories, products }) {
+  const { pathname } = useLocation();
+  const isAdminRoute = pathname.startsWith('/admin');
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
+      <SEO config={config} />
+      
+      {!isAdminRoute && <Header config={config} categories={categories} products={products} />}
+      
+      <main className={isAdminRoute ? "h-screen" : "grow"}>
+        <Routes>
+          <Route path="/" element={<RootRoute config={config} products={products} categories={categories} />} />
+          <Route path="/shop" element={<Shop config={config} products={products} categories={categories} />} />
+          <Route path="/shop/:slug" element={<ProductDetails products={products} config={config} />} />
+          <Route path="/product-category/:slug" element={<ProductCategory products={products} categories={categories} config={config} />} />
+          <Route path="/compare" element={<ComparePage config={config} />} />
+          <Route path="/cart" element={<Cart config={config} />} />
+          <Route path="/checkout" element={<Checkout config={config} />} />
+          <Route path="/faq" element={<FAQ config={config} />} />
+          <Route path="/contact-us" element={<Contact config={config} />} />
+          <Route path="/how-it-works" element={<HowItWorks config={config} />} />
+          <Route path="/about" element={<About config={config} />} />
+          <Route path="/why-shop-with-us" element={<WhyShop config={config} />} />
+          <Route path="/safe-payment" element={<SecurePayment config={config} />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy config={config} />} />
+          <Route path="/antispam-policy" element={<AntispamPolicy config={config} />} />
+          <Route path="/delivery-policy" element={<DeliveryPolicy config={config} />} />
+          <Route path="/terms-conditions" element={<TermsConditions config={config} />} />
+          <Route path="/refund-returns-policy" element={<ReturnsRefunds config={config} />} />
+          <Route path="/order-processing" element={<OrderProcessing config={config} />} />
+          <Route path="/blog" element={<Blog config={config} />} />
+          <Route path="/refer-a-friend" element={<ReferFriend config={config} />} />
+          <Route path="/order-received" element={<OrderReceived config={config} />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+          <Route path="/admin/products" element={<AdminRoute><ProductManagement /></AdminRoute>} />
+          <Route path="/admin/categories" element={<AdminRoute><CategoryManagement /></AdminRoute>} />
+          <Route path="/admin/orders" element={<AdminRoute><OrderManagement /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+          <Route path="/admin/settings" element={<AdminRoute><SettingsManagement /></AdminRoute>} />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+
+      {!isAdminRoute && (
+        <>
+          <CartDrawer />
+          <ComparePanel />
+          <Footer config={config} products={products} />
+          <FloatingActions config={config} />
+        </>
+      )}
+    </div>
   );
 }
 

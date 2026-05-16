@@ -54,6 +54,27 @@ const auth = async (req, res, next) => {
   }
 };
 
+// Admin Auth Middleware
+const adminAuth = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) throw new Error();
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
+    const user = await User.findById(decoded.id);
+    
+    if (!user || !user.isAdmin) {
+      throw new Error();
+    }
+
+    req.user = user;
+    req.token = token;
+    next();
+  } catch (e) {
+    res.status(403).send({ error: 'Access denied. Admin only.' });
+  }
+};
+
 // Email Helper
 const sendOrderEmails = async (order) => {
   try {
@@ -324,6 +345,216 @@ app.get('/api/settings/:key', async (req, res) => {
     res.json(setting);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+
+// ===== ADMIN API ROUTES =====
+
+// Dashboard Stats
+app.get('/api/admin/stats', adminAuth, async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const totalProducts = await Product.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const totalCategories = await Category.countDocuments();
+    
+    const orders = await Order.find();
+    const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+
+    const recentOrders = await Order.find().sort({ createdAt: -1 }).limit(5);
+
+    res.json({
+      stats: {
+        totalOrders,
+        totalProducts,
+        totalUsers,
+        totalCategories,
+        totalRevenue
+      },
+      recentOrders
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Admin Products CRUD
+app.get('/api/admin/products', adminAuth, async (req, res) => {
+  try {
+    const products = await Product.find().populate('category');
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/api/admin/products', adminAuth, async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/products/:id', adminAuth, async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!product) return res.status(444).json({ message: 'Product not found' });
+    res.json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.delete('/api/admin/products/:id', adminAuth, async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) return res.status(444).json({ message: 'Product not found' });
+    res.json({ message: 'Product deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Admin Categories CRUD
+app.get('/api/admin/categories', adminAuth, async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/api/admin/categories', adminAuth, async (req, res) => {
+  try {
+    const category = new Category(req.body);
+    await category.save();
+    res.status(201).json(category);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/categories/:id', adminAuth, async (req, res) => {
+  try {
+    const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!category) return res.status(444).json({ message: 'Category not found' });
+    res.json(category);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.delete('/api/admin/categories/:id', adminAuth, async (req, res) => {
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) return res.status(444).json({ message: 'Category not found' });
+    res.json({ message: 'Category deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Admin Orders CRUD
+app.get('/api/admin/orders', adminAuth, async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/orders/:id', adminAuth, async (req, res) => {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+    if (!order) return res.status(444).json({ message: 'Order not found' });
+    res.json(order);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.delete('/api/admin/orders/:id', adminAuth, async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
+    if (!order) return res.status(444).json({ message: 'Order not found' });
+    res.json({ message: 'Order deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Admin Users CRUD
+app.get('/api/admin/users', adminAuth, async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/users/:id', adminAuth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-password');
+    if (!user) return res.status(444).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+app.delete('/api/admin/users/:id', adminAuth, async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(444).json({ message: 'User not found' });
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/users/:id/password', adminAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(444).json({ message: 'User not found' });
+    
+    user.password = req.body.password;
+    await user.save();
+    
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Admin Settings & Config
+app.get('/api/admin/settings', adminAuth, async (req, res) => {
+  try {
+    const settings = await Setting.find();
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.put('/api/admin/config', adminAuth, async (req, res) => {
+  try {
+    let config = await Config.findOne();
+    if (!config) {
+      config = new Config(req.body);
+    } else {
+      Object.assign(config, req.body);
+    }
+    await config.save();
+    res.json(config);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
