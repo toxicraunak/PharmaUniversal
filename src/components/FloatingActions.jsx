@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { MessageSquare, ArrowUp } from 'lucide-react';
+import { MessageSquare, ArrowUp, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FloatingActions = ({ config }) => {
@@ -43,7 +43,7 @@ const FloatingActions = ({ config }) => {
         )}
       </AnimatePresence>
 
-      {/* WhatsApp Button (Draggable) */}
+      {/* Support Mail Button (Draggable) */}
       <motion.div
         drag
         dragConstraints={constraintsRef}
@@ -52,16 +52,10 @@ const FloatingActions = ({ config }) => {
         className="fixed bottom-12 left-6 z-60 pointer-events-auto"
       >
         <a
-          href={`https://wa.me/${config?.contact?.whatsapp}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#25D366] text-white p-4 rounded-full shadow-2xl flex items-center justify-center cursor-pointer"
+          href={`mailto:${config?.contact?.supportEmail}`}
+          className="bg-blue-500 text-white p-4 rounded-full shadow-2xl flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors"
         >
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-            alt="WhatsApp"
-            className="w-8 h-8 pointer-events-none"
-          />
+          <Mail size={28} className="pointer-events-none" />
         </a>
       </motion.div>
 

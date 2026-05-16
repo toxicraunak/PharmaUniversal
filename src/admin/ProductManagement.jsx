@@ -199,7 +199,7 @@ const ProductManagement = () => {
                 <tr key={product._id} className="hover:bg-slate-50 transition-all">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0">
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                       </div>
                       <div>
@@ -246,7 +246,7 @@ const ProductManagement = () => {
       {/* Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

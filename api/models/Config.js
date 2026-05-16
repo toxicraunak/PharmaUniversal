@@ -7,7 +7,7 @@ const configSchema = new mongoose.Schema({
     address: { type: String, default: '230 Oxford Rd Kenilworth, IL 60043 USA' },
     email: { type: String, default: 'info@pharmauniversal.com' },
     phone: { type: String, default: '+1 (123) 456-7890' },
-    whatsapp: { type: String, default: '+11234567890' }
+    supportEmail: { type: String, default: 'support@pharmauniversal.com' }
   },
   seo: {
     title: { type: String, default: 'Pharma Universal - A Trusted Online Pharmacy' },

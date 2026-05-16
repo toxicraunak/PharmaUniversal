@@ -62,7 +62,7 @@ const AdminLayout = ({ children }) => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className={`${
               isMobile ? 'fixed inset-y-0 left-0' : 'relative'
-            } z-50 bg-[#0f172a] text-white shadow-2xl overflow-hidden flex-shrink-0`}
+            } z-50 bg-[#0f172a] text-white shadow-2xl overflow-hidden shrink-0`}
           >
             <div className="h-full flex flex-col">
               {/* Logo Section */}
@@ -129,7 +129,7 @@ const AdminLayout = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Header */}
-        <header className="h-20 bg-white border-b border-slate-200 px-6 flex items-center justify-between flex-shrink-0">
+        <header className="h-20 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
             <button
               onClick={toggleSidebar}

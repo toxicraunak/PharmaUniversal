@@ -114,11 +114,17 @@ const ProductDetails = ({ products, config }) => {
   const totalMrp = (unitMrp * quantity).toFixed(2);
 
 
-  const handleWhatsApp = () => {
-    const phone = config?.contact?.phone || '19208286890';
-    const text = `*${product.fullName || product.name}*%0A*Price:* $${totalPrice}%0A*Package:* ${selectedPackage || 'Not selected'}%0A*URL:* ${window.location.href}%0A%0AThank you!`;
-    const url = `https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${text}&app_absent=0`;
-    window.open(url, '_blank');
+  const handleEmailSupport = () => {
+    const subject = `Order Inquiry: ${product.fullName || product.name}`;
+    const body = `Hello, I'm interested in purchasing:
+Product: ${product.fullName || product.name}
+Package: ${selectedPackage || 'Not selected'}
+Quantity: ${quantity}
+Price: $${totalPrice}
+URL: ${window.location.href}
+
+Please let me know how to proceed.`;
+    window.location.href = `mailto:${config?.contact?.supportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const toggleWishlist = () => {
@@ -319,11 +325,11 @@ const ProductDetails = ({ products, config }) => {
                   </button>
 
                   <button 
-                    onClick={handleWhatsApp}
-                    className="flex-1 h-12 py-4 bg-emerald-500 text-white rounded-lg flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:brightness-110 transition-all duration-300 shadow-lg cursor-pointer"
+                    onClick={handleEmailSupport}
+                    className="flex-1 h-12 py-4 bg-blue-500 text-white rounded-lg flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:bg-blue-600 transition-all duration-300 shadow-lg cursor-pointer"
                   >
-                    <i className="fab fa-whatsapp text-[22px]" />
-                    Buy Via WhatsApp
+                    <Mail size={18} />
+                    Buy Via Email
                   </button>
                 </div>
               </div>

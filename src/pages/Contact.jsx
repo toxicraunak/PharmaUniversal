@@ -64,12 +64,17 @@ const Contact = ({ config }) => {
               </div>
             </div>
 
-            {/* Whatsapp number */}
-            <div>
-              <h3 className="text-[14px] font-heading font-black text-gray-900 uppercase tracking-wide mb-2">Whatsapp number</h3>
-              <p className="text-gray-500 font-display text-[14px]">
-                {config?.contact?.whatsapp || '1 909 366 3104'}
-              </p>
+            {/* Support Email */}
+            <div className="flex gap-4">
+              <div className="text-primary mt-1">
+                <Mail size={24} />
+              </div>
+              <div>
+                <h3 className="text-[14px] font-heading font-black text-gray-900 uppercase tracking-wide mb-2">Support Email</h3>
+                <p className="text-gray-500 font-display text-[14px]">
+                  {config?.contact?.supportEmail || 'support@pharmauniversal.com'}
+                </p>
+              </div>
             </div>
 
             {/* Chat with us */}

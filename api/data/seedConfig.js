@@ -5,12 +5,12 @@ async function seedConfig() {
     if (!config) {
         await Config.create({
             siteName: "Pharma Universal",
-            logo: "/logo.png",
+            logo: "https://pharmauniversal.com/wp-content/uploads/2022/09/logo.png.webp",
             contact: {
                 address: "230 Oxford Rd Kenilworth, IL 60043 USA",
                 email: "[EMAIL_ADDRESS]",
                 phone: "+1 (123) 456-7890",
-                whatsapp: "+11234567890"
+                supportEmail: "support@pharmauniversal.com"
             },
             seo: {
                 title: "Pharma Universal - A Trusted Online Pharmacy",

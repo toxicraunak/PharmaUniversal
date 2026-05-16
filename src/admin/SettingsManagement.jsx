@@ -22,7 +22,7 @@ const SettingsManagement = () => {
         setConfig(configRes.data || {
           siteName: 'Pharma Universal',
           logo: '/logo.png',
-          contact: { address: '', email: '', phone: '', whatsapp: '' },
+          contact: { address: '', email: '', phone: '', supportEmail: '' },
           seo: { title: '', description: '', keywords: '', ogImage: '' },
           socialLinks: { facebook: '', twitter: '', instagram: '', vimeo: '' }
         });
@@ -149,9 +149,9 @@ const SettingsManagement = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">WhatsApp Number</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Support Email</label>
                 <input 
-                  type="text" name="whatsapp" value={config.contact.whatsapp} onChange={(e) => handleConfigChange(e, 'contact')}
+                  type="email" name="supportEmail" value={config.contact.supportEmail} onChange={(e) => handleConfigChange(e, 'contact')}
                   className="w-full bg-slate-50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-500/20 text-sm"
                 />
               </div>
