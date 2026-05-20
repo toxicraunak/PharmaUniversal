@@ -86,11 +86,19 @@ const sendOrderEmails = async (order) => {
       return;
     }
 
-    const transporter = nodemailer.createTransport(smtpSetting.value);
+    const transporter = nodemailer.createTransport({
+      host: smtpSetting.value.host,
+      port: smtpSetting.value.port,
+      secure: smtpSetting.value.secure || false,
+      auth: {
+        user: smtpSetting.value.auth?.user,
+        pass: smtpSetting.value.auth?.pass
+      }
+    });
 
     // 1. Send to User
     const userMailOptions = {
-      from: `"${smtpSetting.value.senderName || 'Pharmacy Universal'}" <${smtpSetting.value.auth.user}>`,
+      from: `"${smtpSetting.value.senderName || 'Pharmacy Universal'}" <${smtpSetting.value.senderEmail || smtpSetting.value.auth.user}>`,
       to: order.billingDetails.email,
       subject: `Order Received #${order._id.toString().slice(-6).toUpperCase()}`,
       html: `
@@ -131,7 +139,7 @@ const sendOrderEmails = async (order) => {
 
     // 2. Send to Admin
     const adminMailOptions = {
-      from: `"${smtpSetting.value.senderName || 'Pharmacy Universal'}" <${smtpSetting.value.auth.user}>`,
+      from: `"${smtpSetting.value.senderName || 'Pharmacy Universal'}" <${smtpSetting.value.senderEmail || smtpSetting.value.auth.user}>`,
       to: adminSetting.value,
       subject: `New Order Placed #${order._id.toString().slice(-6).toUpperCase()}`,
       html: `

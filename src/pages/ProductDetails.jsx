@@ -9,9 +9,9 @@ import {
   RefreshCcw, 
   ChevronRight, 
   ChevronLeft,
-  MessageCircle,
   Share2,
   X,
+  Mail,
   GitCompareArrows
 } from 'lucide-react';
 import { useCompare } from '../context/CompareContext';

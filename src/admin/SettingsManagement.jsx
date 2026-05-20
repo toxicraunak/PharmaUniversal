@@ -69,6 +69,7 @@ const SettingsManagement = () => {
       await axios.post('/api/settings', { key, value }, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      setSettings(prev => prev.map(s => s.key === key ? { ...s, value } : s));
       setMessage({ text: `${key} updated successfully!`, type: 'success' });
     } catch (err) {
       setMessage({ text: `Error updating ${key}`, type: 'error' });
@@ -274,12 +275,48 @@ const SettingsManagement = () => {
                   />
                 </div>
                 <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sender Name</label>
+                  <input 
+                    type="text" defaultValue={settings.find(s => s.key === 'smtp_config').value.senderName || ''}
+                    onBlur={(e) => {
+                      const oldVal = settings.find(s => s.key === 'smtp_config').value;
+                      const newVal = {...oldVal, senderName: e.target.value};
+                      handleSettingUpdate('smtp_config', newVal);
+                    }}
+                    className="w-full bg-slate-50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-500/20 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sender Email</label>
+                  <input 
+                    type="email" defaultValue={settings.find(s => s.key === 'smtp_config').value.senderEmail || ''}
+                    onBlur={(e) => {
+                      const oldVal = settings.find(s => s.key === 'smtp_config').value;
+                      const newVal = {...oldVal, senderEmail: e.target.value};
+                      handleSettingUpdate('smtp_config', newVal);
+                    }}
+                    className="w-full bg-slate-50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-500/20 text-sm"
+                  />
+                </div>
+                <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">SMTP User</label>
                   <input 
                     type="text" defaultValue={settings.find(s => s.key === 'smtp_config').value.auth.user}
                     onBlur={(e) => {
                       const oldVal = settings.find(s => s.key === 'smtp_config').value;
                       const newVal = {...oldVal, auth: {...oldVal.auth, user: e.target.value}};
+                      handleSettingUpdate('smtp_config', newVal);
+                    }}
+                    className="w-full bg-slate-50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-500/20 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">SMTP Password</label>
+                  <input 
+                    type="password" defaultValue={settings.find(s => s.key === 'smtp_config').value.auth.pass || ''}
+                    onBlur={(e) => {
+                      const oldVal = settings.find(s => s.key === 'smtp_config').value;
+                      const newVal = {...oldVal, auth: {...oldVal.auth, pass: e.target.value}};
                       handleSettingUpdate('smtp_config', newVal);
                     }}
                     className="w-full bg-slate-50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-500/20 text-sm"
