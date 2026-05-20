@@ -122,7 +122,7 @@ const Checkout = ({ config }) => {
         userId: user?._id
       };
 
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/orders`, orderData);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || '/api'}/orders`, orderData);
       
       if (res.status === 201) {
         clearCart();

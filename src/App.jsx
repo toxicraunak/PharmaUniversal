@@ -49,7 +49,7 @@ import { CompareProvider } from './context/CompareContext';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Component to decide whether to show Home or Search results on the root path
 const RootRoute = ({ config, products, categories }) => {
